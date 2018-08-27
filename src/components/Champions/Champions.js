@@ -1,40 +1,37 @@
-
-import React, { Component } from 'react';
-import axios from "axios"
+import React, { Component } from "react";
+import axios from "axios";
 class Champions extends Component {
-    constructor(props) {
-        super(props);
-    
-        this.state = {
-        champions:[]
-        };
-      }
+  constructor(props) {
+    super(props);
 
-    componentWillMount() {
-        axios.get("/api/Champions").then(response => {
-          this.setState({ champions: response.data });
-          console.log(response);
-        });
-      }
+    this.state = {
+      champions: []
+    };
+  }
 
-      
-    render() {
-        console.log(this.state.champions)
-        const { champions } = this.state;
-        let champList = this.state.champions.map((elem, ind) => {
-            return (
-                <div key={elem} className="champCard">
-              
-              </div>
-            );
-          });
+  componentDidMount() {
+    axios.get("/api/Champions").then(response => {
+      this.setState({ champions: Object.values(response.data) });
+    });
+  }
+
+  render() {
+    console.log(this.state.champions);
+
+    let champList = this.state.champions.map((elem, ind) => {
       return (
-      
-        <div className="App">
-         {champList}
+        <div key={elem} className="champCard">
+          <p>
+            name:
+            {elem.name}
+          </p>
+          <p>{elem.blurb}</p>
+          <hr />
         </div>
       );
-    }
+    });
+    return <div className="App">{champList}</div>;
   }
-  
-  export default Champions;
+}
+
+export default Champions;
